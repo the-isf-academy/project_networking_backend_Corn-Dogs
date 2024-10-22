@@ -12,7 +12,6 @@ class Rather(Model):
 
 
     def json_response(self):
-        
         return {
             'id': self.id,
             'scenario': self.noun + " " + self.verb + " " + self.noun2,
@@ -36,6 +35,12 @@ class Rather(Model):
         self.timechosen = 0
         self.save
 
+def json_options(self):
+        
+        return {
+            'id': self.id,
+            'scenario one': self.noun + " " + self.verb + " " + self.noun2,
+            'OR':self,
+            'scenario one': self.noun + " " + self.verb + " " + self.noun2,
 
-
-    
+        }
