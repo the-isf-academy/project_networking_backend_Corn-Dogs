@@ -3,11 +3,11 @@
 from banjo.models import Model, StringField, IntegerField, FloatField, BooleanField
 
 
-class Rather(Model):
+class WouldYouRather(Model):
     noun = StringField()
     noun2 = StringField()
     verb = StringField()
-    timechosen = IntegerField()
+    timeschosen = IntegerField()
     happy = BooleanField()
 
 
@@ -15,27 +15,27 @@ class Rather(Model):
         return {
             'id': self.id,
             'scenario': self.noun + " " + self.verb + " " + self.noun2,
-            'times chosen': self.timechosen,
+            'times chosen': self.timeschosen,
             'positive': self.happy
         }
     
 
     def change_verb(self, new_word):
         self.verb = new_word
-        self.timechosen = 0
-        self.save
+        self.timeschosen = 0
+        self.save()
           
     def change_noun(self, new_word):
         self.noun = new_word
-        self.timechosen = 0
-        self.save
+        self.timeschosen = 0
+        self.save()
  
     def change_noun2(self, new_word):
         self.noun2 = new_word
-        self.timechosen = 0
-        self.save
+        self.timeschosen = 0
+        self.save()
 
-def json_options(self):
+def json_options(self, id1, id2):
         
         return {
             'id': self.id,
