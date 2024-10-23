@@ -32,7 +32,6 @@ Scenario: stores the scenarios and their corresponding choices
 ## Setup
 
 poetry shell
-pip install num2words
 banjo --debug
 
 ### Contents

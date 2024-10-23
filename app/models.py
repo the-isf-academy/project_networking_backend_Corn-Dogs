@@ -15,8 +15,7 @@ class WouldYouRather(Model):
         return {
             'id': self.id,
             'scenario': self.noun + " " + self.verb + " " + self.noun2,
-            'times chosen': self.timeschosen,
-            'positive': self.happy
+            'positive': self.happy,
         }
     
 
@@ -35,12 +34,24 @@ class WouldYouRather(Model):
         self.timeschosen = 0
         self.save()
 
-def json_options(self, id1, id2):
-        
+    def play_scenarios(self, id1, id2):
+        scenario1 = WouldYouRather.objects.get(id=id1)      #defines scenario 1 and 2 as different IDs and words, which allows it to not return the same thing twice
+        scenario2 = WouldYouRather.objects.get(id=id2)                               
         return {
-            'id': self.id,
-            'scenario one': self.noun + " " + self.verb + " " + self.noun2,
-            'OR':self,
-            'scenario one': self.noun + " " + self.verb + " " + self.noun2,
-
+            'Would You Rather': 
+            
+            f"{scenario1.noun} {scenario1.verb} {scenario1.noun2} OR {scenario2.noun} {scenario2.verb} {scenario2.noun2}"
         }
+    
+    def chosen_scenario(self, id1, id2):
+        scenario1 = WouldYouRather.objects.get(id=id1)
+        scenario2 = WouldYouRather.objects.get(id=id2) 
+        return {
+            'Would You Rather':
+            f"{scenario1.noun} {scenario1.verb} {scenario1.noun2} OR {scenario2.noun} {scenario2.verb} {scenario2.noun2}"
+            f"{scenario1.timeschosen}/{scenario2.timeschosen}"
+        }
+
+    def increase(self):
+        self.timeschosen += 1
+        self.save()
