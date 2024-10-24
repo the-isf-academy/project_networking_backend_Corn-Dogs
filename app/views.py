@@ -81,6 +81,7 @@ def change_scenario(args):
 
 
 
+
 @route_get(BASE_URL +'option')    ##where the user gets given two random scenarios/options
 def choose_scenario(args):
     good_list = []
@@ -98,7 +99,7 @@ def choose_scenario(args):
         scenario_list = good_list
     else:
         scenario_list = bad_list
-
+        
     scenario1 = choice(scenario_list)       #chooses two scenarios from the same mood list
     scenario2 = choice(scenario_list)
 
@@ -124,28 +125,25 @@ def choose_scenario(args):
     tworesp = scenario2.json_response()
     matching.append(oneresp)                                            #stores the current game for choosing (next step)
     matching.append(tworesp)
-    return {'Game': scenario1.play_scenarios(scenario1.id, scenario2.id)}                #returns your options
+    return {'Game': scenario1.json_play(scenario1.id, scenario2.id)}                #returns your options
 
-    
-@route_get(BASE_URL + 'form')
-def thing(args):
-    return {'test':matching}
+
+
+
+
 
 @route_post(BASE_URL + 'choose', args={'option': int})
 def choose_scenario(args):
+    scenario1 = WouldYouRather.objects.get(id=matching[0]['id'])
+    scenario2= WouldYouRather.objects.get(id=matching[1]['id'])
     if args['option'] == 1:
-        one_scenario = matching[0]
-        one_scenario['timeschosen'].increase()
+        scenario1.increase()
 
     elif args['option'] == 2:
-        one_scenario = matching[1]
-        one_scenario['timeschosen'] += 1
+        scenario2.increase()
     else:
         return {'error': 'maximum comparison is 2 or invalid option'}
-    return {}
-
-    #choice - make a choice between the two options (link into option somehow?) 
-
+    return {'GAME': scenario1.json_chosen(scenario1.id, scenario2.id)}
 
 
 
@@ -162,6 +160,7 @@ def help(args):
     return {'route options': formattedoptions}
 
 
+
 @route_post(BASE_URL + 'delete', args={'id': int, 'password': str})
 def delete_scenario(args):
     scenario_id_to_delete = args['id']
@@ -175,7 +174,9 @@ def delete_scenario(args):
             # Store the ID for later use
             delete_scenario_id = scenario_to_delete.id
             scenario_to_delete.delete()
+
             return {'DELETING': scenario_to_delete.json_response()}
+
         else:
             return {'error': 'Authorization password incorrect.'}
     else:
